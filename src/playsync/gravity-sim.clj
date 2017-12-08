@@ -6,7 +6,7 @@
 
 (def bcount 10)
 
-(def g 3)
+(def g 10)
 
 (def update-time 30)                                        ;anim update time ms
 
@@ -71,7 +71,6 @@
         [nx ny] (map #(int (+ 0.5 %)) newloc)
         p (place [nx ny])
         ]
-    ;(println newloc)
     (if (= loc [nx ny])
       (dosync
         (alter p assoc :body body)
@@ -100,12 +99,10 @@
   (let [p (place loc)
         body (:body @p)
         ]
-    ;(println body @p)
     (Thread/sleep update-time)
     (dosync
       (when (dtest loc)
         (send-off *agent* #'behave))
-      ;(println "after agent" *agent*)
       (move loc))
     ))
 
@@ -169,5 +166,5 @@
 
 (def bodies (setup))
 (send-off animator animation)
-;(dorun (map #(send-off %  behave) bodies))
-(send-off (first bodies) behave)
+(dorun (map #(send-off %  behave) bodies))
+;(send-off (first bodies) behave)
